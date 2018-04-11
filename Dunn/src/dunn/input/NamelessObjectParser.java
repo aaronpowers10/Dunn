@@ -19,7 +19,7 @@ package dunn.input;
 
 import java.util.ArrayList;
 
-import cropper.input.ObjectInput;
+import booker.building_data.BookerObject;
 import otis.lexical.CannotParseException;
 import otis.lexical.InputSequence;
 import otis.lexical.Parser;
@@ -30,7 +30,7 @@ import otis.lexical.UpdateListener;
 public class NamelessObjectParser implements Parser{
 	
 	private TableParser typeParser;
-	private ObjectInput object;
+	private BookerObject object;
 	private ArrayList<UpdateListener> updateListeners;
 
 	public NamelessObjectParser(ArrayList<UpdateListener> updateListeners) {
@@ -38,7 +38,7 @@ public class NamelessObjectParser implements Parser{
 		typeParser = new TableParser("/doe2_res/Types.txt", new SpaceDelimitedRowFactory());
 	}
 	
-	public ObjectInput parseObject(InputSequence in) throws CannotParseException {
+	public BookerObject parseObject(InputSequence in) throws CannotParseException {
 		parseWithMessage(in,updateListeners);
 		return object;
 	}
@@ -46,7 +46,7 @@ public class NamelessObjectParser implements Parser{
 	public String parse(InputSequence in)
 			throws CannotParseException {
 		String type = typeParser.parse(in);
-		object = new ObjectInput(type,type);
+		object = new BookerObject(type,type);
 		return type;
 	}
 	

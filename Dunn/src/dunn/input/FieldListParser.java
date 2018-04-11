@@ -19,7 +19,8 @@ package dunn.input;
 
 import java.util.ArrayList;
 
-import cropper.input.FieldInput;
+import booker.building_data.BookerField;
+import booker.building_data.FieldList;
 import otis.lexical.AndParser;
 import otis.lexical.CannotParseException;
 import otis.lexical.InputSequence;
@@ -34,10 +35,10 @@ public class FieldListParser implements Parser{
 	private Parser optionalDelimiter;
 	private Parser requiredDelimiter;
 	private Parser fieldListEnd;
-	private ArrayList<FieldInput> fields;
+	private FieldList fields;
 
 	public FieldListParser(ArrayList<UpdateListener> updateListeners) {
-		fields = new ArrayList<FieldInput>();
+		fields = new FieldList();
 		String err = "Delimiter required between field definitions.";
 		fieldParser = new DOE2FieldParser(updateListeners);
 		DelimiterParser delimiterParser = new DelimiterParser();
@@ -47,21 +48,21 @@ public class FieldListParser implements Parser{
 		fieldListEnd = new AndParser(new Parser[] { optionalDelimiter, terminator });
 	}
 	
-	public ArrayList<FieldInput> parseFieldList(InputSequence in) throws CannotParseException{
+	public FieldList parseFieldList(InputSequence in) throws CannotParseException{
 		parse(in);
 		return fields;
 	}
 
 	@Override
 	public String parse(InputSequence in) throws CannotParseException {
-		fields = new ArrayList<FieldInput>();
+		fields = new FieldList();
 		boolean continueParsing = true;
 		while (continueParsing) {
 			try {
 				fieldListEnd.parse(in);
 				continueParsing = false;
 			} catch (CannotParseException e) {
-				FieldInput field = fieldParser.parseField(in);
+				BookerField field = fieldParser.parseField(in);
 				fields.add(field);				
 				
 				if (!field.type().equals("List")) {

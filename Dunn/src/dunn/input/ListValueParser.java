@@ -19,7 +19,7 @@ package dunn.input;
 
 import java.util.ArrayList;
 
-import cropper.input.SingleValueInput;
+import booker.building_data.FieldValue;
 import otis.lexical.AndParser;
 import otis.lexical.CannotParseException;
 import otis.lexical.CharacterParser;
@@ -33,10 +33,10 @@ public class ListValueParser implements Parser {
 	private Parser arrayTerminator;
 	private Parser optionalDelimiter;
 	private Parser requiredDelimiter;
-	private ArrayList<SingleValueInput> values;
+	private ArrayList<FieldValue> values;
 
 	public ListValueParser() {
-		values = new ArrayList<SingleValueInput>();
+		values = new ArrayList<FieldValue>();
 		String err1 = "Delimiter required between array elements.";
 		openParenthesis = new CharacterParser("(");
 		DelimiterParser delimiterParser = new DelimiterParser();
@@ -46,14 +46,14 @@ public class ListValueParser implements Parser {
 		requiredDelimiter = RequiredParser.wrap((delimiterParser), err1);
 	}
 	
-	public ArrayList<SingleValueInput> parseList(InputSequence in) throws CannotParseException{
+	public ArrayList<FieldValue> parseList(InputSequence in) throws CannotParseException{
 		parse(in);
 		return values;
 	}
 
 	@Override
 	public String parse(InputSequence in) throws CannotParseException {
-		values = new ArrayList<SingleValueInput>();
+		values = new ArrayList<FieldValue>();
 		openParenthesis.parse(in);
 		optionalDelimiter.parse(in);
 		SingleValueParser fieldValueParser = new SingleValueParser();

@@ -17,7 +17,7 @@
  */
 package dunn.driver;
 
-import cropper.input.ProjectInput;
+import booker.building_data.BuildingProject;
 import dunn.input.DOE2ProjectParser;
 import otis.lexical.ConsoleUpdateListener;
 
@@ -25,7 +25,7 @@ public class DunnDriver {
 
 	public static void main(String[] args) {
 		DOE2ProjectParser parser = new DOE2ProjectParser(new ConsoleUpdateListener());
-		ProjectInput projectInput = parser.parse("Building1.inp");
+		BuildingProject projectInput = parser.parse("Building1.inp");
 	}
 
 }

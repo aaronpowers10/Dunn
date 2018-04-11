@@ -19,7 +19,7 @@ package dunn.input;
 
 import java.util.ArrayList;
 
-import cropper.input.ObjectInput;
+import booker.building_data.BookerObject;
 import otis.lexical.CannotParseException;
 import otis.lexical.InputSequence;
 import otis.lexical.Parser;
@@ -28,7 +28,7 @@ import otis.lexical.UpdateListener;
 
 public class DOE2ObjectParser implements Parser {
 	
-	private ObjectInput object;
+	private BookerObject object;
 	private FieldListParser fieldListParser;
 	private NamelessObjectParser namelessObjectParser;
 	private NamedObjectParser namedObjectParser;
@@ -39,7 +39,7 @@ public class DOE2ObjectParser implements Parser {
 		fieldListParser = new FieldListParser(updateListeners);
 	}
 	
-	public ObjectInput parseObject(InputSequence in) throws CannotParseException {
+	public BookerObject parseObject(InputSequence in) throws CannotParseException {
 		parse(in);
 		return object;
 	}
@@ -57,7 +57,7 @@ public class DOE2ObjectParser implements Parser {
 		}
 		
 		try {
-			object.setFieldInputs(fieldListParser.parseFieldList(in));
+			object.setFields(fieldListParser.parseFieldList(in));
 		} catch (CannotParseException e) {
 			throw new SyntaxException("Syntax error on line number " + in.lineNumber() + ".");
 		}

@@ -19,8 +19,8 @@ package dunn.input;
 
 import java.util.ArrayList;
 
-import cropper.input.FieldInput;
-import cropper.input.FieldValueInput;
+import booker.building_data.BookerField;
+import booker.building_data.FieldValue;
 import otis.lexical.CannotParseException;
 import otis.lexical.InputSequence;
 import otis.lexical.OptionalParser;
@@ -35,7 +35,7 @@ public class DOE2FieldParser implements Parser{
 	private FieldValueParser fieldValueParser;
 	private Parser delimiterParser;
 	private Parser optionalDelimiter;
-	private FieldInput field;
+	private BookerField field;
 
 	public DOE2FieldParser(ArrayList<UpdateListener> updateListeners) {
 		this.updateListeners = updateListeners;
@@ -46,7 +46,7 @@ public class DOE2FieldParser implements Parser{
 		optionalDelimiter = OptionalParser.wrap(new DelimiterParser());
 	}
 	
-	public FieldInput parseField(InputSequence in) throws CannotParseException{
+	public BookerField parseField(InputSequence in) throws CannotParseException{
 		parseWithMessage(in,updateListeners);
 		return field;
 	}
@@ -57,8 +57,8 @@ public class DOE2FieldParser implements Parser{
 		optionalDelimiter.parse(in);
 		String name = namespaceWordParser.parse(in);	
 		delimiterParser.parse(in);
-		FieldValueInput value = fieldValueParser.parseValue(in);
-		field = new FieldInput(name,value);
+		FieldValue value = fieldValueParser.parseValue(in);
+		field = new BookerField(name,value);
 		return "";
 	}
 

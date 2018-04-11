@@ -17,28 +17,24 @@
  */
 package dunn.input;
 
-import cropper.input.FieldValueInput;
-import cropper.input.ListValueInput;
-import cropper.input.SingleValueInput;
-import otis.lexical.BetweenParser;
+import booker.building_data.FieldValue;
+import booker.building_data.ListValue;
 import otis.lexical.CannotParseException;
-import otis.lexical.CharacterParser;
 import otis.lexical.InputSequence;
-import otis.lexical.NumericParser;
 import otis.lexical.Parser;
 
 public class FieldValueParser implements Parser {
 
 	private ListValueParser listParser;
 	private SingleValueParser singleValueParser;
-	private FieldValueInput value;
+	private FieldValue value;
 
 	public FieldValueParser() {
 		listParser = new ListValueParser();
 		singleValueParser = new SingleValueParser();
 	}
 	
-	public FieldValueInput parseValue(InputSequence in)throws CannotParseException{
+	public FieldValue parseValue(InputSequence in)throws CannotParseException{
 		parse(in);
 		return value;
 	}
@@ -46,7 +42,7 @@ public class FieldValueParser implements Parser {
 	@Override
 	public String parse(InputSequence in) throws CannotParseException {
 		try{
-			value = new ListValueInput(listParser.parseList(in));
+			value = new ListValue(listParser.parseList(in));
 
 		} catch (CannotParseException e1){
 			value = singleValueParser.parseValue(in);

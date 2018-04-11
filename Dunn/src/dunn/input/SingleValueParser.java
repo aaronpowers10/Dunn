@@ -17,7 +17,9 @@
  */
 package dunn.input;
 
-import cropper.input.SingleValueInput;
+import booker.building_data.AlphaValue;
+import booker.building_data.FieldValue;
+import booker.building_data.RealValue;
 import otis.lexical.BetweenParser;
 import otis.lexical.CannotParseException;
 import otis.lexical.CharacterParser;
@@ -31,7 +33,7 @@ public class SingleValueParser implements Parser {
 	private Parser expressionParser;
 	private Parser stringParser;
 	private Parser namespaceParser;
-	private SingleValueInput value;
+	private FieldValue value;
 
 	public SingleValueParser() {
 		numericParser = new NumericParser();
@@ -42,7 +44,7 @@ public class SingleValueParser implements Parser {
 
 	}
 
-	public SingleValueInput parseValue(InputSequence in) throws CannotParseException {
+	public FieldValue parseValue(InputSequence in) throws CannotParseException {
 		parse(in);
 		return value;
 	}
@@ -50,15 +52,15 @@ public class SingleValueParser implements Parser {
 	@Override
 	public String parse(InputSequence in) throws CannotParseException {
 		try {
-			value = new SingleValueInput(numericParser.parse(in), "Numeric");
+			value = new RealValue(Double.parseDouble(numericParser.parse(in)));
 		} catch (CannotParseException e1) {
 			try {
-				value = new SingleValueInput(expressionParser.parse(in), "Expression");
+				value = new AlphaValue(expressionParser.parse(in));
 			} catch (CannotParseException e2) {
 				try {
-					value = new SingleValueInput(stringParser.parse(in), "String");
+					value = new AlphaValue(stringParser.parse(in));
 				} catch (CannotParseException e3) {
-					value = new SingleValueInput(namespaceParser.parse(in), "Namespace");
+					value = new AlphaValue(namespaceParser.parse(in));
 				}
 			}
 

@@ -20,7 +20,7 @@ package dunn.input;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import cropper.input.ProjectInput;
+import booker.building_data.BuildingProject;
 import otis.lexical.CannotParseException;
 import otis.lexical.EndOfSequenceException;
 import otis.lexical.InputSequence;
@@ -44,10 +44,10 @@ public class DOE2ProjectParser {
 		this.updateListeners = updateListeners;
 	}
 
-	public ProjectInput parse(String fileName){
+	public BuildingProject parse(String fileName){
 		InputSequence in = new InputSequence(fileName,80);
 		
-		ProjectInput project = new ProjectInput();
+		BuildingProject project = new BuildingProject();
 		
 		OptionalParser optionalDelimiter = new OptionalParser(new DelimiterParser());
 		optionalDelimiter.parse(in);

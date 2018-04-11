@@ -19,7 +19,7 @@ package dunn.input;
 
 import java.util.ArrayList;
 
-import cropper.input.ObjectInput;
+import booker.building_data.BookerObject;
 import otis.lexical.CannotParseException;
 import otis.lexical.InputSequence;
 import otis.lexical.Parser;
@@ -29,7 +29,7 @@ import otis.lexical.UpdateListener;
 public class NamedObjectParser implements Parser{
 	private NamespaceWordParser namespaceWordParser;
 	private Parser delimiterParser;
-	private ObjectInput object;
+	private BookerObject object;
 	private ArrayList<UpdateListener> updateListeners;
 
 	public NamedObjectParser(ArrayList<UpdateListener> updateListeners) {
@@ -39,7 +39,7 @@ public class NamedObjectParser implements Parser{
 		delimiterParser = RequiredParser.wrap(new DelimiterParser(), err);
 	}
 	
-	public ObjectInput parseObject(InputSequence in) throws CannotParseException{
+	public BookerObject parseObject(InputSequence in) throws CannotParseException{
 		parseWithMessage(in,updateListeners);
 		return object;
 	}
@@ -50,7 +50,7 @@ public class NamedObjectParser implements Parser{
 		delimiterParser.parse(in);
 		String type = namespaceWordParser.parse(in);
 		delimiterParser.parse(in);
-		object = new ObjectInput(type,name);
+		object = new BookerObject(type,name);
 		return name + " " + type;
 	}
 	
