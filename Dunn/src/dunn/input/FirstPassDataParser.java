@@ -20,42 +20,44 @@ package dunn.input;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import booker.building_data.BuildingProject;
+import booker.building_data.BookerField;
+import booker.building_data.BookerProject;
 import otis.lexical.CannotParseException;
 import otis.lexical.EndOfSequenceException;
 import otis.lexical.InputSequence;
 import otis.lexical.OptionalParser;
 import otis.lexical.UpdateListener;
 
-public class DOE2ProjectParser {
+public class FirstPassDataParser {
 	
 	private ArrayList<UpdateListener> updateListeners;
 	
-	public DOE2ProjectParser(){
+	public FirstPassDataParser(){
 		updateListeners = new ArrayList<UpdateListener>();
 	}
 	
-	public DOE2ProjectParser(UpdateListener updateListener){
+	public FirstPassDataParser(UpdateListener updateListener){
 		updateListeners = new ArrayList<UpdateListener>();
 		updateListeners.add(updateListener);
 	}
 	
-	public DOE2ProjectParser(ArrayList<UpdateListener> updateListeners){
+	public FirstPassDataParser(ArrayList<UpdateListener> updateListeners){
 		this.updateListeners = updateListeners;
 	}
 
-	public BuildingProject parse(String fileName){
+	public BookerProject parse(String fileName){
 		InputSequence in = new InputSequence(fileName,80);
 		
-		BuildingProject project = new BuildingProject();
+		BookerProject project = new BookerProject();
 		
 		OptionalParser optionalDelimiter = new OptionalParser(new DelimiterParser());
 		optionalDelimiter.parse(in);
 
-		DOE2ObjectParser objectParser = new DOE2ObjectParser(updateListeners);
+		ObjectParser objectParser = new ObjectParser(updateListeners);
+		
 
 		boolean continueParsing = true;
-		while (continueParsing) {
+		while (continueParsing) {			
 			try {
 				project.add(objectParser.parseObject(in));
 				optionalDelimiter.parse(in);
@@ -66,12 +68,9 @@ public class DOE2ProjectParser {
 			}
 
 		}
-		updateListeners("Finished reading input file. ");
-		try{
-			in.close();
-		} catch (IOException e){
-			e.printStackTrace();
-		}
+
+		in.close();
+
 		return project;
 	}
 	

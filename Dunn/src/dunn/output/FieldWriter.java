@@ -15,32 +15,28 @@
  *  limitations under the License.
  *
  */
-package dunn.driver;
+package dunn.output;
 
-import booker.building_data.BookerProject;
-import booker.io.ProjectReadCompleteListener;
-import dunn.input.DOE2ProjectLoader;
-import otis.lexical.ConsoleUpdateListener;
+import booker.building_data.BookerField;
+import booker.io.InputFileWriter;
+import booker.io.OutputSequence;
 
-public class DunnDriver implements ProjectReadCompleteListener {
-
-	public static void main(String[] args) {
-		
-		DunnDriver driver = new DunnDriver();
-		
-		DOE2ProjectLoader loader = new DOE2ProjectLoader(new ConsoleUpdateListener());
-		
-		loader.addProjectReadCompleteListener(driver);
-		
-		loader.load("Building1.inp");
-		
+public class FieldWriter implements InputFileWriter {
+	
+	private BookerField field;
+	
+	public FieldWriter(BookerField field){
+		this.field = field;
 	}
 
-
+	/**
+	 * @param out
+	 */
 	@Override
-	public void projectReadComplete(BookerProject project) {
-		project.write("Building1out.inp");
-		
+	public void write(OutputSequence out) {
+		out.write(field.name());
+		out.write(" = ");
+		field.value().write(out);		
 	}
 
 }

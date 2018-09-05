@@ -28,7 +28,7 @@ import otis.lexical.Parser;
 import otis.lexical.RequiredParser;
 import otis.lexical.UpdateListener;
 
-public class DOE2FieldParser implements Parser{
+public class FieldParser implements Parser{
 
 	private ArrayList<UpdateListener> updateListeners;
 	private NamespaceWordParser namespaceWordParser;
@@ -37,7 +37,7 @@ public class DOE2FieldParser implements Parser{
 	private Parser optionalDelimiter;
 	private BookerField field;
 
-	public DOE2FieldParser(ArrayList<UpdateListener> updateListeners) {
+	public FieldParser(ArrayList<UpdateListener> updateListeners) {
 		this.updateListeners = updateListeners;
 		String err = "Delimiter required between field name and field value.";
 		namespaceWordParser = new NamespaceWordParser();

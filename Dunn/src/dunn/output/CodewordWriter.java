@@ -15,32 +15,32 @@
  *  limitations under the License.
  *
  */
-package dunn.driver;
+package dunn.output;
 
-import booker.building_data.BookerProject;
-import booker.io.ProjectReadCompleteListener;
-import dunn.input.DOE2ProjectLoader;
-import otis.lexical.ConsoleUpdateListener;
+import booker.building_data.AlphaValue;
+import booker.io.InputFileWriter;
+import booker.io.OutputSequence;
 
-public class DunnDriver implements ProjectReadCompleteListener {
-
-	public static void main(String[] args) {
-		
-		DunnDriver driver = new DunnDriver();
-		
-		DOE2ProjectLoader loader = new DOE2ProjectLoader(new ConsoleUpdateListener());
-		
-		loader.addProjectReadCompleteListener(driver);
-		
-		loader.load("Building1.inp");
-		
+public class CodewordWriter implements InputFileWriter {
+	
+	private AlphaValue value;
+	
+	public CodewordWriter(AlphaValue value){
+		this.value = value;
 	}
-
 
 	@Override
-	public void projectReadComplete(BookerProject project) {
-		project.write("Building1out.inp");
+	public void write(OutputSequence out) {
+		if(value.value().contains(" ")){
+			out.write("\"");
+		}
+		out.write(value.value());
+		if(value.value().contains(" ")){
+			out.write("\"");
+		}
 		
 	}
+	
+	
 
 }

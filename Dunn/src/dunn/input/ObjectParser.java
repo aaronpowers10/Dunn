@@ -26,14 +26,14 @@ import otis.lexical.Parser;
 import otis.lexical.SyntaxException;
 import otis.lexical.UpdateListener;
 
-public class DOE2ObjectParser implements Parser {
+public class ObjectParser implements Parser {
 	
 	private BookerObject object;
 	private FieldListParser fieldListParser;
 	private NamelessObjectParser namelessObjectParser;
 	private NamedObjectParser namedObjectParser;
 	
-	public DOE2ObjectParser(ArrayList<UpdateListener> updateListeners){
+	public ObjectParser(ArrayList<UpdateListener> updateListeners){
 		namelessObjectParser = new NamelessObjectParser(updateListeners);
 		namedObjectParser = new NamedObjectParser(updateListeners);
 		fieldListParser = new FieldListParser(updateListeners);

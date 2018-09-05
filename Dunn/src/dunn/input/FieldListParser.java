@@ -31,7 +31,7 @@ import otis.lexical.StringParser;
 import otis.lexical.UpdateListener;
 
 public class FieldListParser implements Parser{
-	private DOE2FieldParser fieldParser;
+	private FieldParser fieldParser;
 	private Parser optionalDelimiter;
 	private Parser requiredDelimiter;
 	private Parser fieldListEnd;
@@ -40,7 +40,7 @@ public class FieldListParser implements Parser{
 	public FieldListParser(ArrayList<UpdateListener> updateListeners) {
 		fields = new FieldList();
 		String err = "Delimiter required between field definitions.";
-		fieldParser = new DOE2FieldParser(updateListeners);
+		fieldParser = new FieldParser(updateListeners);
 		DelimiterParser delimiterParser = new DelimiterParser();
 		optionalDelimiter = new OptionalParser(delimiterParser);
 		requiredDelimiter = RequiredParser.wrap((delimiterParser), err);
