@@ -1,31 +1,12 @@
-/*
- *
- *  Copyright (C) 2018 Aaron Powers
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- */
 package dunn.translation;
-
-import java.util.ArrayList;
 
 import booker.building_data.BookerProject;
 import booker.building_data.Namespace;
 import booker.building_data.NamespaceList;
 import dunn.object_factories.ProjectCreator;
+import java.util.ArrayList;
 
-public class DOE2ProjectTranslator<T extends Namespace> {
-
+public class DOE2ProjectTranslator <T extends Namespace> {
 	private ArrayList<RunPeriodCreator> runPeriodCreators;
 	private ArrayList<SiteDataCreator> siteDataCreators;
 	private ArrayList<DayScheduleCreator> dayScheduleCreators;
@@ -34,6 +15,7 @@ public class DOE2ProjectTranslator<T extends Namespace> {
 	private ArrayList<ConstructionCreator> constructionCreators;
 	private ArrayList<PolygonCreator> polygonCreators;
 	private ArrayList<WeightFactorCreator> weightFactorCreators;
+	private ArrayList<ShadeCreator> shadeCreators;
 	private ArrayList<FloorCreator> floorCreators;
 	private ArrayList<CurveCreator> curveCreators;
 	private ArrayList<PumpCreator> pumpCreators;
@@ -47,198 +29,219 @@ public class DOE2ProjectTranslator<T extends Namespace> {
 	private ArrayList<ReportCreator> reportCreators;
 	private ArrayList<ObjectModifier> objectModifiers;
 
+	public DOE2ProjectTranslator() {
+		initializeLists();
+	}
+
 	public DOE2ProjectTranslator(NamespaceList<T> objects) {
-		runPeriodCreators = new ArrayList<RunPeriodCreator>();
-		siteDataCreators = new ArrayList<SiteDataCreator>();
-		dayScheduleCreators = new ArrayList<DayScheduleCreator>();
-		weekScheduleCreators = new ArrayList<WeekScheduleCreator>();
-		annualScheduleCreators = new ArrayList<AnnualScheduleCreator>();
-		constructionCreators = new ArrayList<ConstructionCreator>();
-		polygonCreators = new ArrayList<PolygonCreator>();
-		weightFactorCreators = new ArrayList<WeightFactorCreator>();
-		floorCreators = new ArrayList<FloorCreator>();
-		curveCreators = new ArrayList<CurveCreator>();
-		pumpCreators = new ArrayList<PumpCreator>();
-		loopCreators = new ArrayList<LoopCreator>();
-		chillerCreators = new ArrayList<ChillerCreator>();
-		coolingTowerCreators = new ArrayList<CoolingTowerCreator>();
-		systemCreators = new ArrayList<SystemCreator>();
-		equipmentControlCreators = new ArrayList<EquipmentControlCreator>();
-		meterCreators = new ArrayList<MeterCreator>();
-		reportBlockCreators = new ArrayList<ReportBlockCreator>();
-		reportCreators = new ArrayList<ReportCreator>();
-		objectModifiers = new ArrayList<ObjectModifier>();
-		for (int i = 0; i < objects.size(); i++) {
-			T object = objects.get(i);
-
-			if (object instanceof RunPeriodCreator) {
-				runPeriodCreators.add((RunPeriodCreator) object);
-			}
-
-			if (object instanceof SiteDataCreator) {
-				siteDataCreators.add((SiteDataCreator) object);
-			}
-
-			if (object instanceof DayScheduleCreator) {
-				dayScheduleCreators.add((DayScheduleCreator) object);
-			}
-
-			if (object instanceof WeekScheduleCreator) {
-				weekScheduleCreators.add((WeekScheduleCreator) object);
-			}
-
-			if (object instanceof AnnualScheduleCreator) {
-				annualScheduleCreators.add((AnnualScheduleCreator) object);
-			}
-
-			if (object instanceof ConstructionCreator) {
-				constructionCreators.add((ConstructionCreator) object);
-			}
-
-			if (object instanceof PolygonCreator) {
-				polygonCreators.add((PolygonCreator) object);
-			}
-
-			if (object instanceof WeightFactorCreator) {
-				weightFactorCreators.add((WeightFactorCreator) object);
-			}
-
-			if (object instanceof FloorCreator) {
-				floorCreators.add((FloorCreator) object);
-			}
-
-			if (object instanceof CurveCreator) {
-				curveCreators.add((CurveCreator) object);
-			}
-
-			if (object instanceof ChillerCreator) {
-				chillerCreators.add((ChillerCreator) object);
-			}
-
-			if (object instanceof CoolingTowerCreator) {
-				coolingTowerCreators.add((CoolingTowerCreator) object);
-			}
-
-			if (object instanceof PumpCreator) {
-				pumpCreators.add((PumpCreator) object);
-			}
-
-			if (object instanceof LoopCreator) {
-				loopCreators.add((LoopCreator) object);
-			}
-
-			if (object instanceof SystemCreator) {
-				systemCreators.add((SystemCreator) object);
-			}
-
-			if (object instanceof EquipmentControlCreator) {
-				equipmentControlCreators.add((EquipmentControlCreator) object);
-			}
-
-			if (object instanceof MeterCreator) {
-				meterCreators.add((MeterCreator) object);
-			}
-
-			if (object instanceof ReportBlockCreator) {
-				reportBlockCreators.add((ReportBlockCreator) object);
-			}
-			
-			if (object instanceof ReportCreator) {
-				reportCreators.add((ReportCreator) object);
-			}
-
-			if (object instanceof ObjectModifier) {
-				objectModifiers.add((ObjectModifier) object);
-			}
-
-		}
+		initializeLists();
+		appendObjects(objects);
 	}
 
 	public BookerProject createDOE2Project() {
 		BookerProject project = ProjectCreator.initializeProject();
 
-		for (RunPeriodCreator runPeriodCreator : runPeriodCreators) {
+		for (RunPeriodCreator runPeriodCreator : this.runPeriodCreators) {
 			runPeriodCreator.addRunPeriod(project);
 		}
 
-		for (SiteDataCreator siteDataCreator : siteDataCreators) {
+		for (SiteDataCreator siteDataCreator : this.siteDataCreators) {
 			siteDataCreator.addSiteData(project);
 		}
 
-		for (DayScheduleCreator scheduleCreator : dayScheduleCreators) {
+		for (DayScheduleCreator scheduleCreator : this.dayScheduleCreators) {
 			scheduleCreator.addDaySchedules(project);
 		}
 
-		for (WeekScheduleCreator scheduleCreator : weekScheduleCreators) {
+		for (WeekScheduleCreator scheduleCreator : this.weekScheduleCreators) {
 			scheduleCreator.addWeekSchedules(project);
 		}
 
-		for (AnnualScheduleCreator scheduleCreator : annualScheduleCreators) {
+		for (AnnualScheduleCreator scheduleCreator : this.annualScheduleCreators) {
 			scheduleCreator.addAnnualSchedules(project);
 		}
 
-		for (ConstructionCreator constructionCreator : constructionCreators) {
+		for (ConstructionCreator constructionCreator : this.constructionCreators) {
 			constructionCreator.addConstructions(project);
 		}
 
-		for (CurveCreator curveCreator : curveCreators) {
+		for (CurveCreator curveCreator : this.curveCreators) {
 			curveCreator.addCurve(project);
 		}
 
-		for (PolygonCreator polygonCreator : polygonCreators) {
+		for (PolygonCreator polygonCreator : this.polygonCreators) {
 			polygonCreator.addPolygon(project);
 		}
 
-		for (WeightFactorCreator weightFactorCreator : weightFactorCreators) {
+		for (WeightFactorCreator weightFactorCreator : this.weightFactorCreators) {
 			weightFactorCreator.addWeightFactors(project);
 		}
 
-		for (FloorCreator floorCreator : floorCreators) {
+		for (ShadeCreator shadeCreator : this.shadeCreators) {
+			shadeCreator.addShade(project);
+		}
+
+		for (FloorCreator floorCreator : this.floorCreators) {
 			floorCreator.addFloorsAndDescendants(project);
 		}
 
-		for (MeterCreator meterCreator : meterCreators) {
+		for (MeterCreator meterCreator : this.meterCreators) {
 			meterCreator.addMeter(project);
 		}
 
-		for (PumpCreator pumpCreator : pumpCreators) {
+		for (PumpCreator pumpCreator : this.pumpCreators) {
 			pumpCreator.addPump(project);
 		}
 
-		for (LoopCreator loopCreator : loopCreators) {
+		for (LoopCreator loopCreator : this.loopCreators) {
 			loopCreator.addLoop(project);
 		}
 
-		for (ChillerCreator chillerCreator : chillerCreators) {
+		for (ChillerCreator chillerCreator : this.chillerCreators) {
 			chillerCreator.addChiller(project);
 		}
 
-		for (CoolingTowerCreator coolingTowerCreator : coolingTowerCreators) {
+		for (CoolingTowerCreator coolingTowerCreator : this.coolingTowerCreators) {
 			coolingTowerCreator.addCoolingTower(project);
 		}
 
-		for (SystemCreator systemCreator : systemCreators) {
+		for (SystemCreator systemCreator : this.systemCreators) {
 			systemCreator.addSystemAndDescendants(project);
 		}
 
-		for (EquipmentControlCreator equipmentControlCreator : equipmentControlCreators) {
+		for (EquipmentControlCreator equipmentControlCreator : this.equipmentControlCreators) {
 			equipmentControlCreator.addEquipmentControl(project);
 		}
 
-		for (ReportBlockCreator reportBlockCreator : reportBlockCreators) {
+		for (ReportBlockCreator reportBlockCreator : this.reportBlockCreators) {
 			reportBlockCreator.addReportBlocks(project);
 		}
-		
-		for (ReportCreator reportCreator : reportCreators) {
+
+		for (ReportCreator reportCreator : this.reportCreators) {
 			reportCreator.addReports(project);
 		}
 
-		for (ObjectModifier objectModifier : objectModifiers) {
+		for (ObjectModifier objectModifier : this.objectModifiers) {
 			objectModifier.modifyObjects(project);
 		}
 
 		ProjectCreator.completeProject(project);
 
 		return project;
+	}
+
+	private void initializeLists() {
+		this.runPeriodCreators = new ArrayList<RunPeriodCreator>();
+		this.siteDataCreators = new ArrayList<SiteDataCreator>();
+		this.dayScheduleCreators = new ArrayList<DayScheduleCreator>();
+		this.weekScheduleCreators = new ArrayList<WeekScheduleCreator>();
+		this.annualScheduleCreators = new ArrayList<AnnualScheduleCreator>();
+		this.constructionCreators = new ArrayList<ConstructionCreator>();
+		this.polygonCreators = new ArrayList<PolygonCreator>();
+		this.shadeCreators = new ArrayList<ShadeCreator>();
+		this.weightFactorCreators = new ArrayList<WeightFactorCreator>();
+		this.floorCreators = new ArrayList<FloorCreator>();
+		this.curveCreators = new ArrayList<CurveCreator>();
+		this.pumpCreators = new ArrayList<PumpCreator>();
+		this.loopCreators = new ArrayList<LoopCreator>();
+		this.chillerCreators = new ArrayList<ChillerCreator>();
+		this.coolingTowerCreators = new ArrayList<CoolingTowerCreator>();
+		this.systemCreators = new ArrayList<SystemCreator>();
+		this.equipmentControlCreators = new ArrayList<EquipmentControlCreator>();
+		this.meterCreators = new ArrayList<MeterCreator>();
+		this.reportBlockCreators = new ArrayList<ReportBlockCreator>();
+		this.reportCreators = new ArrayList<ReportCreator>();
+		this.objectModifiers = new ArrayList<ObjectModifier>();
+	}
+
+	public void appendObjects(NamespaceList<T> objects) {
+		for (int i = 0; i < objects.size(); i++) {
+			addObject(objects.get(i));
+		}
+	}
+
+	public void addObject(T object) {
+		if (object instanceof RunPeriodCreator) {
+			this.runPeriodCreators.add((RunPeriodCreator) object);
+		}
+
+		if (object instanceof SiteDataCreator) {
+			this.siteDataCreators.add((SiteDataCreator) object);
+		}
+
+		if (object instanceof DayScheduleCreator) {
+			this.dayScheduleCreators.add((DayScheduleCreator) object);
+		}
+
+		if (object instanceof WeekScheduleCreator) {
+			this.weekScheduleCreators.add((WeekScheduleCreator) object);
+		}
+
+		if (object instanceof AnnualScheduleCreator) {
+			this.annualScheduleCreators.add((AnnualScheduleCreator) object);
+		}
+
+		if (object instanceof ConstructionCreator) {
+			this.constructionCreators.add((ConstructionCreator) object);
+		}
+
+		if (object instanceof PolygonCreator) {
+			this.polygonCreators.add((PolygonCreator) object);
+		}
+
+		if (object instanceof WeightFactorCreator) {
+			this.weightFactorCreators.add((WeightFactorCreator) object);
+		}
+
+		if (object instanceof ShadeCreator) {
+			this.shadeCreators.add((ShadeCreator) object);
+		}
+
+		if (object instanceof FloorCreator) {
+			this.floorCreators.add((FloorCreator) object);
+		}
+
+		if (object instanceof CurveCreator) {
+			this.curveCreators.add((CurveCreator) object);
+		}
+
+		if (object instanceof ChillerCreator) {
+			this.chillerCreators.add((ChillerCreator) object);
+		}
+
+		if (object instanceof CoolingTowerCreator) {
+			this.coolingTowerCreators.add((CoolingTowerCreator) object);
+		}
+
+		if (object instanceof PumpCreator) {
+			this.pumpCreators.add((PumpCreator) object);
+		}
+
+		if (object instanceof LoopCreator) {
+			this.loopCreators.add((LoopCreator) object);
+		}
+
+		if (object instanceof SystemCreator) {
+			this.systemCreators.add((SystemCreator) object);
+		}
+
+		if (object instanceof EquipmentControlCreator) {
+			this.equipmentControlCreators.add((EquipmentControlCreator) object);
+		}
+
+		if (object instanceof MeterCreator) {
+			this.meterCreators.add((MeterCreator) object);
+		}
+
+		if (object instanceof ReportBlockCreator) {
+			this.reportBlockCreators.add((ReportBlockCreator) object);
+		}
+
+		if (object instanceof ReportCreator) {
+			this.reportCreators.add((ReportCreator) object);
+		}
+
+		if (object instanceof ObjectModifier)
+			this.objectModifiers.add((ObjectModifier) object);
 	}
 }

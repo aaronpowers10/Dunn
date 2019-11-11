@@ -17,7 +17,9 @@
  */
 package dunn.driver;
 
+import booker.building_data.BookerObject;
 import booker.building_data.BookerProject;
+import booker.building_data.NamespaceList;
 import booker.io.ProjectReadCompleteListener;
 import dunn.input.DOE2ProjectLoader;
 import otis.lexical.ConsoleUpdateListener;
@@ -32,16 +34,24 @@ public class DunnDriver implements ProjectReadCompleteListener {
 		
 		loader.addProjectReadCompleteListener(driver);
 		
-		loader.load("Building1.inp");
-		
+		loader.load("C:\\inp files\\proj 1.inp");
 		
 	}
 
 
 	@Override
 	public void projectReadComplete(BookerProject project) {
-		project.write("Building1out.inp");
-		
+		NamespaceList<BookerObject> spaces = project.getTypeList("SPACE");
+		for(int i=0;i<spaces.size();i++) {
+			BookerObject space = spaces.get(i);
+			space.deleteField("EQUIP-SCHEDULE");
+			space.deleteField("EQUIP-LATENT");
+			space.deleteField("EQUIP-SENSIBLE");
+			space.deleteField("EQUIPMENT-W/AREA");
+			space.deleteField("C-SUB-SRC-BTUH");
+			space.deleteField("C-SUB-SRC-KW");
+			
+		}
 	}
 
 }

@@ -30,9 +30,10 @@ public class WhitespaceParser implements Parser {
 
 	public WhitespaceParser() {
 		CharacterParser space = new CharacterParser(" ");
+		CharacterParser tab = new CharacterParser("\t");
 		CharacterParser carriageReturn = new CharacterParser("\r");
 		CharacterParser lineFeed = new CharacterParser("\n");
-		parser = new OrParser(new Parser[] { space, carriageReturn, lineFeed });
+		parser = new OrParser(new Parser[] { space, tab,carriageReturn, lineFeed });
 	}
 
 	@Override

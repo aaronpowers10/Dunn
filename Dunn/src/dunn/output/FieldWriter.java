@@ -34,7 +34,8 @@ public class FieldWriter implements InputFileWriter {
 	 */
 	@Override
 	public void write(OutputSequence out) {
-		out.write(field.name());
+		NamespaceWriter.write(field.name(),out);
+		//out.write(field.name());
 		out.write(" = ");
 		field.value().write(out);		
 	}

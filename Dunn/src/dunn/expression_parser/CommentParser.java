@@ -46,9 +46,7 @@ public class CommentParser implements Parser {
 
 	@Override
 	public String parse(InputSequence in) throws CannotParseException {
-
 		return parser.parse(in);
-
 	}
 
 }
