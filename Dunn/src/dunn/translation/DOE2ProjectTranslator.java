@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class DOE2ProjectTranslator <T extends Namespace> {
 	private ArrayList<RunPeriodCreator> runPeriodCreators;
 	private ArrayList<SiteDataCreator> siteDataCreators;
+	private ArrayList<DesignDayCreator> designDayCreators;
 	private ArrayList<DayScheduleCreator> dayScheduleCreators;
 	private ArrayList<WeekScheduleCreator> weekScheduleCreators;
 	private ArrayList<AnnualScheduleCreator> annualScheduleCreators;
@@ -47,6 +48,10 @@ public class DOE2ProjectTranslator <T extends Namespace> {
 
 		for (SiteDataCreator siteDataCreator : this.siteDataCreators) {
 			siteDataCreator.addSiteData(project);
+		}
+		
+		for (DesignDayCreator designDayCreator : this.designDayCreators) {
+			designDayCreator.addDesignDay(project);
 		}
 
 		for (DayScheduleCreator scheduleCreator : this.dayScheduleCreators) {
@@ -133,6 +138,7 @@ public class DOE2ProjectTranslator <T extends Namespace> {
 	private void initializeLists() {
 		this.runPeriodCreators = new ArrayList<RunPeriodCreator>();
 		this.siteDataCreators = new ArrayList<SiteDataCreator>();
+		this.designDayCreators = new ArrayList<DesignDayCreator>();
 		this.dayScheduleCreators = new ArrayList<DayScheduleCreator>();
 		this.weekScheduleCreators = new ArrayList<WeekScheduleCreator>();
 		this.annualScheduleCreators = new ArrayList<AnnualScheduleCreator>();
@@ -167,6 +173,10 @@ public class DOE2ProjectTranslator <T extends Namespace> {
 
 		if (object instanceof SiteDataCreator) {
 			this.siteDataCreators.add((SiteDataCreator) object);
+		}
+		
+		if (object instanceof DesignDayCreator) {
+			this.designDayCreators.add((DesignDayCreator) object);
 		}
 
 		if (object instanceof DayScheduleCreator) {
