@@ -34,7 +34,7 @@ public class DunnDriver implements ProjectReadCompleteListener {
 		
 		loader.addProjectReadCompleteListener(driver);
 		
-		loader.load("C:\\inp files\\proj 1.inp");
+		loader.load("C:\\doe22\\inp\\LG-OFF.inp");
 		
 	}
 
